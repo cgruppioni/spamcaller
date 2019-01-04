@@ -47,14 +47,28 @@ exports.cssLoaders = function (options) {
   }
 
   // https://vue-loader.vuejs.org/en/configurations/extract-css.html
+  // https://github.com/prograhammer/vue-pizza/wiki/Styles
+  // Note: Be careful to only put variables or functions here. If you put a large set of styles here you will find Webpack will take longer to build initially and on hot-reload. An alternative is setting an alias 'stylus': resolve('src/styles/stylus') and then import settings directly into the components you need them: @import '~stylus/1-settings/1-settings.styl'
   return {
     css: generateLoaders(),
     postcss: generateLoaders(),
     less: generateLoaders('less'),
     sass: generateLoaders('sass', { indentedSyntax: true }),
     scss: generateLoaders('sass'),
-    stylus: generateLoaders('stylus'),
-    styl: generateLoaders('stylus')
+    stylus: generateLoaders('stylus', { 
+      preferPathResolver: 'webpack', 
+      import: [
+        '~@/styles/stylus/1-settings/1-settings.styl', // <-- Load these files into every stylus file.
+        '~@/styles/stylus/2-tools/2-tools.styl',       //     Only variables/functions so output CSS is not increased.
+      ] 
+    }),
+    styl: generateLoaders('stylus', { 
+      preferPathResolver: 'webpack', 
+      import: [
+        '~@/styles/stylus/1-settings/1-settings.styl', // <-- Load these files into every stylus file.
+        '~@/styles/stylus/2-tools/2-tools.styl',       //     Only variables/functions so output CSS is not increased.
+      ] 
+    })
   }
 }
 
